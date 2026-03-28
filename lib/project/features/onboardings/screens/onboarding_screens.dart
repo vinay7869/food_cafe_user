@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:food_cafe_user/project/controllers/nav_controller.dart';
-import 'package:food_cafe_user/project/features/auth/screens/auth_landing_page.dart';
-import 'package:food_cafe_user/project/features/bottom_nav/screens/bottom_nav.dart';
 import 'package:food_cafe_user/project/features/onboardings/model/onboarding_model.dart';
+import 'package:food_cafe_user/project/helpers/custome_code/pref.dart';
 import 'package:food_cafe_user/project/helpers/widgets/custom_button.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingScreens extends StatefulWidget {
+  static const routename = 'onbordings';
   const OnboardingScreens({super.key});
 
   @override
@@ -142,14 +144,18 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
                         child: CustomButton(
                           text: 'Next',
                           color: pColor,
-                          onTap: () {
+                          onTap: () async {
                             if (index < onboardingModel.length - 1) {
                               _pageController.nextPage(
                                 duration: const Duration(milliseconds: 500),
                                 curve: Curves.ease,
                               );
                             } else {
-                              Nav.pushNamed(AuthLandingPage.routeName);
+                              await Pref.setBool('skip_intro', true);
+                              log(
+                                'skip 222 -->> ${Pref.getBool('skip_intro')}  ',
+                              );
+                              context.go('/homeTabs');
                             }
                           },
                         ),

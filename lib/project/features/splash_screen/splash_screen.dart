@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../helpers/custome_code/pref.dart';
 import '../../helpers/widgets/custom_loading.dart';
 import '../../helpers/custome_code/global.dart';
 
@@ -16,8 +19,15 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 2), () {
+      final skip = Pref.getBool('skip_intro');
+
       if (!mounted) return;
-      context.goNamed('/auth-landing-page');
+
+      if (skip) {
+        context.go('/homeTabs');
+      } else {
+        context.go('/auth-landing-page');
+      }
     });
   }
 

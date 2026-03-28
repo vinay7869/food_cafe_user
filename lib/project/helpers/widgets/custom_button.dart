@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 
 class CustomButton extends StatelessWidget {
@@ -6,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? color, borderClr, textColor;
   final double? width, height, fontSize;
+  final bool? isEnable;
   const CustomButton({
     super.key,
     required this.text,
@@ -16,6 +18,7 @@ class CustomButton extends StatelessWidget {
     this.fontSize,
     this.borderClr,
     this.textColor,
+    this.isEnable,
   });
 
   @override
@@ -25,9 +28,13 @@ class CustomButton extends StatelessWidget {
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           fixedSize: Size(width ?? mq.width, height ?? mq.height * .057),
-          backgroundColor: color ?? txtColor,
+          backgroundColor: isEnable != null
+              ? isEnable!
+                    ? color
+                    : const Color.fromARGB(255, 129, 127, 127)
+              : color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(27),
+            borderRadius: BorderRadius.circular(27.r),
             side: BorderSide(color: borderClr ?? Colors.transparent),
           ),
         ),
@@ -37,7 +44,7 @@ class CustomButton extends StatelessWidget {
             letterSpacing: .9,
             fontWeight: FontWeight.w700,
             color: textColor ?? txtColor,
-            fontSize: fontSize ?? 15.7,
+            fontSize: fontSize ?? 15.7.sp,
           ),
         ),
       ),

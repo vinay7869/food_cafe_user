@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_cafe_user/project/features/auth/auth_controller/email_auth.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/cm_textfield.dart';
 import 'package:food_cafe_user/project/helpers/widgets/custom_button.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';
@@ -126,11 +130,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: CustomButton(
                           text: 'Login',
-                          onTap: () {
-                            // EmailAuth.signInWithEmail(
-                            //   email: emailC.text,
-                            //   password: passwordC.text,
-                            // );
+                          onTap: () async {
+                            final result = await EmailAuth.loginInWithEmail(
+                              email: emailC.text,
+                              password: passwordC.text,
+                            );
+
+                            if (!context.mounted) return;
+
+                            if (result) {
+                              log('logged in with email');
+
+                              context.go('/onbordings');
+                            }
                           },
                           color: pColor,
                         ),
@@ -149,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             GestureDetector(
-                              // onTap: () => Nav.to(const SignUpScreen()),
+                              onTap: () => context.goNamed('sign-up'),
                               child: const Text(
                                 "Sign Up",
                                 style: TextStyle(
@@ -162,21 +174,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      InkWell(
-                        onTap: () {
-                          // Get.to(() => const TabsScreen());
-                          // Pref.asGuest = true;
-                        },
-                        child: const Text(
-                          "Explore As Guest",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff4E1517),
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: 10.h),
+                      // InkWell(
+                      //   onTap: () {
+                      //     // Get.to(() => const TabsScreen());
+                      //     // Pref.asGuest = true;
+                      //   },
+                      //   child: const Text(
+                      //     "Explore As Guest",
+                      //     style: TextStyle(
+                      //       decoration: TextDecoration.underline,
+                      //       fontWeight: FontWeight.w700,
+                      //       color: Color(0xff4E1517),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
