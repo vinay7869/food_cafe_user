@@ -7,33 +7,37 @@ import 'package:get/get.dart';
 class CMTextfield extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  final bool enabled;
+  final bool? enabled;
   final TextInputType textInputType;
   final VoidCallback onTap;
-  final bool? isSuffix;
+  final Widget? suffixIcon;
   final String? Function(String? value)? onSubmitted;
   final String? Function(String? value)? validator;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
+  final bool? readOnly;
 
   const CMTextfield({
     super.key,
     required this.controller,
     required this.hintText,
-    required this.enabled,
+    this.enabled,
     required this.onTap,
     required this.textInputType,
-    this.isSuffix,
+    this.suffixIcon,
     this.onSubmitted,
     this.validator,
     this.inputFormatters,
     this.maxLength,
+    this.readOnly,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: enabled,
+      readOnly: readOnly ?? false,
       onTap: onTap,
       keyboardType: textInputType,
       onTapOutside: (e) => FocusScope.of(context).unfocus(),
@@ -58,14 +62,12 @@ class CMTextfield extends StatelessWidget {
         ),
         isDense: true,
         hintText: hintText,
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           color: Color.fromARGB(255, 133, 132, 132),
-          fontSize: 13,
+          fontSize: 13.sp,
           fontWeight: FontWeight.w500,
         ),
-        suffixIcon: isSuffix != null && isSuffix!
-            ? const Icon(Icons.date_range)
-            : null,
+        suffixIcon: suffixIcon,
       ),
     );
   }
@@ -94,6 +96,7 @@ class CMPassTextfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         enabled: enabled,
         onTap: onTap,
         keyboardType: textInputType,
@@ -125,12 +128,83 @@ class CMPassTextfield extends StatelessWidget {
                 ? const Icon(Icons.visibility_off)
                 : const Icon(Icons.visibility),
           ),
-          hintStyle: const TextStyle(
+          hintStyle: TextStyle(
             color: Color.fromARGB(255, 133, 132, 132),
-            fontSize: 13,
+            fontSize: 13.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CMDatePickerTextfield extends StatelessWidget {
+  final TextEditingController controller;
+  final String hintText;
+  final bool? enabled;
+  final TextInputType textInputType;
+  final VoidCallback onTap;
+  final bool? isSuffix;
+  final String? Function(String? value)? onSubmitted;
+  final String? Function(String? value)? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
+  final bool? readOnly;
+
+  const CMDatePickerTextfield({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.enabled,
+    required this.onTap,
+    required this.textInputType,
+    this.isSuffix,
+    this.onSubmitted,
+    this.validator,
+    this.inputFormatters,
+    this.maxLength,
+    this.readOnly,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      enabled: enabled,
+      readOnly: readOnly ?? false,
+      onTap: onTap,
+      keyboardType: textInputType,
+      onTapOutside: (e) => FocusScope.of(context).unfocus(),
+      maxLength: maxLength,
+      onFieldSubmitted: onSubmitted,
+      validator: validator,
+      controller: controller,
+      inputFormatters: inputFormatters,
+      style: TextStyle(fontSize: 13.sp),
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(14.0),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 244, 240, 240),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: blackColor),
+          borderRadius: BorderRadius.all(Radius.circular(30.r)),
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(30.r)),
+        ),
+        isDense: true,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: Color.fromARGB(255, 133, 132, 132),
+          fontSize: 13.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        suffixIcon: isSuffix != null && isSuffix!
+            ? const Icon(Icons.date_range)
+            : null,
       ),
     );
   }

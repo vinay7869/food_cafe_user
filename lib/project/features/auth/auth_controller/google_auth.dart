@@ -31,6 +31,8 @@ class GoogleSignInAuth {
         await Pref.setString('uid', userCredentials.user!.uid);
         UserController().createUser(user: userCredentials.user!);
 
+    
+
         return true;
       } else {
         log('Something went wrong');

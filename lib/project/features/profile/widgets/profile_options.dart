@@ -15,7 +15,7 @@ class ProfileOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      splashColor: pColor.withOpacity(.07),
+      splashColor: pColor.withValues(alpha: .07),
       child: Padding(
         padding: EdgeInsets.only(top: mq.height * .02, bottom: mq.height * .02),
         child: Row(

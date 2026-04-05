@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_cafe_user/project/features/auth/auth_controller/email_auth.dart';
 import 'package:food_cafe_user/project/features/auth/auth_controller/google_auth.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/custome_code.dart';
@@ -45,18 +46,24 @@ class SignUpScreenState extends State<SignUpScreen> {
   final RxBool isEnable = false.obs;
 
   bool toggleIsEnable() {
-    final validators = [
-      Validators.email(emailC.text),
-      Validators.password(passwordC.text),
-      Validators.name(nameC.text),
-      Validators.dob(dobC.text),
-      Validators.phone(phoneC.text),
-    ];
-
-    final isValid = validators.every((e) => e == null);
+    final isValid =
+        emailC.text.isNotEmpty &&
+        passwordC.text.length >= 6 &&
+        nameC.text.isNotEmpty &&
+        dobC.text.isNotEmpty &&
+        phoneC.text.length == 10;
 
     isEnable.value = isValid;
     return isValid;
+  }
+
+  DateTime parseDob(String dob) {
+    final parts = dob.split('/');
+    return DateTime(
+      int.parse(parts[2]),
+      int.parse(parts[1]),
+      int.parse(parts[0]),
+    );
   }
 
   @override
@@ -82,14 +89,13 @@ class SignUpScreenState extends State<SignUpScreen> {
       ),
       body: Form(
         key: _signUpFormKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: ListView(
           padding: EdgeInsets.only(left: mq.width * .07, right: mq.width * .07),
           children: [
-            const Align(
+            Align(
               child: Text(
                 'Create an account',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w700),
               ),
             ),
             Padding(
@@ -137,7 +143,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             ),
             GestureDetector(
               onTap: () => _selectDate(context),
-              child: CMTextfield(
+              child: CMDatePickerTextfield(
                 controller: dobC,
                 hintText: 'Date of Birth',
                 enabled: false,
@@ -181,12 +187,15 @@ class SignUpScreenState extends State<SignUpScreen> {
                   isEnable: isEnable.value,
                   text: 'Sign Up',
                   onTap: () async {
-                    if (!isEnable.value) return;
+                    final isValid =
+                        _signUpFormKey.currentState?.validate() ?? false;
+
+                    if (!isValid) return;
 
                     final result = await EmailAuth.createEmailAuth(
                       email: emailC.text,
                       password: passwordC.text,
-                      dob: DateTime.parse(dobC.text),
+                      dob: parseDob(dobC.text),
                       phoneNumber: phoneC.text,
                     );
 

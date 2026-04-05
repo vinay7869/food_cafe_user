@@ -2,8 +2,10 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_cafe_user/project/features/auth/model/user_model.dart';
+import 'package:food_cafe_user/project/helpers/custome_code/pref.dart';
+import 'package:get/state_manager.dart';
 
-class UserController {
+class UserController extends GetxController {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   Future<void> createUser({
@@ -28,6 +30,10 @@ class UserController {
           .collection('user')
           .doc(uid)
           .set(createUserStruct.toJson(), SetOptions(merge: true));
+
+      log('User created success -->> ${createUserStruct.toJson()}');
+
+      Pref.setString('uid', user.uid);
 
       log('User Created!!!');
     } catch (e) {

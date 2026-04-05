@@ -13,7 +13,7 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70.h,
+      height: 57.h,
       width: double.infinity,
       child: DecoratedBox(
         decoration: const BoxDecoration(color: pColor),

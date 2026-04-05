@@ -1,7 +1,9 @@
 class Validators {
   static String? email(String? value) {
     if (value == null || value.isEmpty) return 'Email required';
-    if (!value.contains('@')) return 'Invalid email';
+    if (!value.contains('@') || (!value.contains('.com'))) {
+      return 'Invalid email';
+    }
     return null;
   }
 
@@ -13,7 +15,7 @@ class Validators {
 
   static String? password(String? value) {
     if (value == null || value.isEmpty) return 'Password cannot be empty';
-    if (value.length < 5) return 'Require Min 6 letters';
+    if (value.length < 6) return 'Require Min 6 letters';
     return null;
   }
 

@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
+import 'package:food_cafe_user/project/helpers/custome_code/pref.dart';
+import 'package:food_cafe_user/project/helpers/widgets/custom_loading.dart';
 import 'package:go_router/go_router.dart';
-import '../../helpers/custome_code/pref.dart';
-import '../../helpers/widgets/custom_loading.dart';
-import '../../helpers/custome_code/global.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:food_cafe_user/project/features/onboardings/model/onboarding_model.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/pref.dart';
@@ -152,9 +150,7 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
                               );
                             } else {
                               await Pref.setBool('skip_intro', true);
-                              log(
-                                'skip 222 -->> ${Pref.getBool('skip_intro')}  ',
-                              );
+                              if (!context.mounted) return;
                               context.go('/homeTabs');
                             }
                           },

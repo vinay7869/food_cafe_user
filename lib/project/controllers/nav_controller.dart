@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_cafe_user/project/features/auth/screens/auth_landing_page.dart';
 import 'package:food_cafe_user/project/features/auth/screens/login_screen.dart';
 import 'package:food_cafe_user/project/features/auth/screens/sign_up_screen.dart';
-import 'package:food_cafe_user/project/features/bottom_nav/screens/bottom_nav.dart';
 import 'package:food_cafe_user/project/features/bottom_nav/screens/home_tabs.dart';
 import 'package:food_cafe_user/project/features/onboardings/screens/onboarding_screens.dart';
+import 'package:food_cafe_user/project/features/profile/screens/edit_profile_screen.dart';
 import 'package:food_cafe_user/project/features/splash_screen/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,6 +63,16 @@ class Nav {
         builder: (context, state) {
           return HomeTabs();
         },
+
+        routes: [
+          GoRoute(
+            path: 'editProfile',
+            name: 'editProfile',
+            builder: (context, state) {
+              return EditProfileScreen();
+            },
+          ),
+        ],
       ),
     ],
   );
