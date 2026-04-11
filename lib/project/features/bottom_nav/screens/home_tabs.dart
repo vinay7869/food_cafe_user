@@ -18,7 +18,7 @@ class HomeTabs extends StatefulWidget {
 }
 
 class _HomeTabsState extends State<HomeTabs> {
-  final _bottomNavController = Get.put(BottomNavController());
+  final _bottomNavController = Get.find<BottomNavController>();
 
   @override
   void initState() {

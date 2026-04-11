@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_cafe_user/project/features/profile/controllers/profile_controller.dart';
+import 'package:food_cafe_user/project/features/profile/screens/admin_controls/admin_upload_screen.dart';
 import 'package:food_cafe_user/project/features/profile/widgets/profile_options.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/logout_dialog.dart';
@@ -16,12 +17,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final ProfileController profileController = Get.put(ProfileController());
+  final ProfileController _profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
     super.initState();
-    profileController.fetchUser();
+    _profileController.fetchUser();
   }
 
   @override
@@ -51,10 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 80.w,
                         width: 80.w,
                         child:
-                            profileController.user.value.profilePic.isNotEmpty
+                            _profileController.user.value.profilePic.isNotEmpty
                             ? CachedNetworkImage(
                                 imageUrl:
-                                    profileController.user.value.profilePic,
+                                    _profileController.user.value.profilePic,
                                 placeholder: (context, url) => CircleAvatar(
                                   radius: 50.r,
                                   child: CircularProgressIndicator(
@@ -75,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      profileController.user.value.name,
+                      _profileController.user.value.name,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Padding(
@@ -86,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Text(
-                      profileController.user.value.email,
+                      _profileController.user.value.email,
                       style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                     ),
                   ],
@@ -145,6 +146,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             image: '$profilePath/help.png',
             text: 'Help Center',
             onTap: () {},
+          ),
+          Visibility(
+            visible: _profileController.user.value.isAdmin,
+            child: ProfileOptions(
+              image: '$profilePath/lock.png',
+              text: 'Admin upload',
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AdminPanelScreen()),
+                );
+              },
+            ),
           ),
           ProfileOptions(
             image: '$profilePath/logout.png',

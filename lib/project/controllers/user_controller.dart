@@ -16,6 +16,10 @@ class UserController extends GetxController {
     try {
       final uid = user.uid;
 
+      final checkUserExists = await checkIfUserExists(uid);
+
+      if (checkUserExists) return;
+
       final createUserStruct = UserModel(
         uid: user.uid,
         name: user.displayName ?? 'User',
@@ -48,5 +52,11 @@ class UserController extends GetxController {
     if (!user.exists) return null;
 
     return UserModel.fromJson(user.data()!);
+  }
+
+  Future<bool> checkIfUserExists(String uid) async {
+    final doc = await firebaseFirestore.collection('user').doc(uid).get();
+    final exists = doc.exists;
+    return exists;
   }
 }

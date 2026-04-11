@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:food_cafe_user/project/controllers/user_controller.dart';
 import 'package:food_cafe_user/project/features/auth/model/user_model.dart';
@@ -9,10 +8,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController {
-  final UserController userController = Get.put(UserController());
+  final UserController userController = Get.find<UserController>();
   RxBool isLoading = false.obs;
   Rx<UserModel> user = UserModel().obs;
-  final firebaseFirestore = FirebaseFirestore.instance;
   Rx<XFile?> image = Rx<XFile?>(null);
   final firebaseStorage = FirebaseStorage.instance;
 
@@ -47,7 +45,7 @@ class ProfileController extends GetxController {
 
       userData.removeWhere((key, value) => value == null);
 
-      final doc = firebaseFirestore.collection('user').doc(uid);
+      final doc = userController.firebaseFirestore.collection('user').doc(uid);
 
       await doc.update(userData);
 

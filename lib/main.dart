@@ -4,7 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_cafe_user/firebase_options.dart';
 import 'package:food_cafe_user/project/controllers/nav_controller.dart';
+import 'package:food_cafe_user/project/controllers/user_controller.dart';
 import 'package:food_cafe_user/project/features/auth/auth_controller/google_auth.dart';
+import 'package:food_cafe_user/project/features/bottom_nav/controller/bottom_nav_controller.dart';
+import 'package:food_cafe_user/project/features/categories/controllers/categories_controller.dart';
+import 'package:food_cafe_user/project/features/profile/controllers/profile_controller.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:get/get.dart';
 import 'project/helpers/custome_code/pref.dart';
@@ -26,6 +30,12 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) => runApp(const MyApp()));
+
+  // Initialize controllers
+  Get.put(BottomNavController(), permanent: true);
+  Get.put(UserController(), permanent: true);
+  Get.put(ProfileController());
+  Get.put(CategoriesController());
 }
 
 class MyApp extends StatelessWidget {

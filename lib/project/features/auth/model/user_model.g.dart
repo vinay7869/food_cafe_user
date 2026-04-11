@@ -18,6 +18,7 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
           .toList() ??
       const [],
   dob: const DateTimeConverter().fromJson(json['dob']),
+  isAdmin: json['isAdmin'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
@@ -29,4 +30,5 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'profilePic': instance.profilePic,
       'address': instance.address,
       'dob': const DateTimeConverter().toJson(instance.dob),
+      'isAdmin': instance.isAdmin,
     };

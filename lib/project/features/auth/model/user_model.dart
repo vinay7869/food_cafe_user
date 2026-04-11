@@ -16,6 +16,7 @@ abstract class UserModel with _$UserModel {
     @Default('') String profilePic,
     @Default([]) List<Address> address,
     @DateTimeConverter() DateTime? dob,
+    @Default(false) bool isAdmin,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

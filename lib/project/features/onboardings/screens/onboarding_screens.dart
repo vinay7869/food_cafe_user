@@ -151,7 +151,7 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
                             } else {
                               await Pref.setBool('skip_intro', true);
                               if (!context.mounted) return;
-                              context.go('/homeTabs');
+                              context.go('/homeTabs', extra: 1);
                             }
                           },
                         ),
