@@ -3,9 +3,14 @@ import 'package:food_cafe_user/project/features/auth/screens/auth_landing_page.d
 import 'package:food_cafe_user/project/features/auth/screens/login_screen.dart';
 import 'package:food_cafe_user/project/features/auth/screens/sign_up_screen.dart';
 import 'package:food_cafe_user/project/features/bottom_nav/screens/home_tabs.dart';
+import 'package:food_cafe_user/project/features/categories/model/cart_item_model.dart';
+import 'package:food_cafe_user/project/features/categories/screens/dish_info.dart';
+import 'package:food_cafe_user/project/features/categories/screens/dish_list_screen.dart';
+import 'package:food_cafe_user/project/features/checkout/screens/checkout_screen.dart';
 import 'package:food_cafe_user/project/features/onboardings/screens/onboarding_screens.dart';
 import 'package:food_cafe_user/project/features/profile/screens/edit_profile_screen.dart';
 import 'package:food_cafe_user/project/features/splash_screen/splash_screen.dart';
+import 'package:food_cafe_user/project/model/dish_model.dart';
 import 'package:go_router/go_router.dart';
 
 class Nav {
@@ -65,11 +70,43 @@ class Nav {
         },
 
         routes: [
+          // Profile flow starts here
           GoRoute(
             path: 'editProfile',
             name: 'editProfile',
             builder: (context, state) {
               return EditProfileScreen();
+            },
+          ),
+
+          // Dish flow starts here
+          GoRoute(
+            path: 'dishList',
+            name: 'dishList',
+            builder: (context, state) {
+              final data = state.extra as Map<String, dynamic>;
+
+              final categoryId = data['id'];
+              final dishName = data['name'];
+              return DishList(categoryId: categoryId, dishName: dishName);
+            },
+          ),
+
+          GoRoute(
+            path: 'dishInfo',
+            name: 'dishInfo',
+            builder: (context, state) {
+              final dishModel = state.extra as DishModel;
+              return DishInfoScreen(dishModel: dishModel);
+            },
+          ),
+
+          GoRoute(
+            path: 'checkout',
+            name: 'checkout',
+            builder: (context, state) {
+              // final cartItemModel = state.extra as CartItemModel;
+              return CheckoutScreen();
             },
           ),
         ],

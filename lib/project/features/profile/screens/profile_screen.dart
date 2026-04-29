@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onTap: () {},
           ),
           Visibility(
-            visible: _profileController.user.value.isAdmin,
+            // visible: _profileController.user.value.isAdmin,
             child: ProfileOptions(
               image: '$profilePath/lock.png',
               text: 'Admin upload',

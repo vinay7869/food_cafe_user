@@ -25,7 +25,9 @@ class _UpdateDishScreenState extends State<UpdateDishScreen> {
   final priceController = TextEditingController();
   final ratingController = TextEditingController();
 
-  bool isVeg = true;
+  bool? isVeg;
+  bool? inStock;
+  bool? isPopularToaday;
   File? imageFile;
 
   final service = DishService();
@@ -39,6 +41,8 @@ class _UpdateDishScreenState extends State<UpdateDishScreen> {
     priceController.text = widget.dish.price.toString();
     ratingController.text = widget.dish.rating.toString();
     isVeg = widget.dish.isVeg;
+    inStock = widget.dish.inStock;
+    isPopularToaday = widget.dish.isPopularToday;
   }
 
   Future<void> pickImage() async {
@@ -76,7 +80,14 @@ class _UpdateDishScreenState extends State<UpdateDishScreen> {
       await service.updateDish(
         categoryId: widget.categoryId,
         dishId: widget.dishId,
-        dish: DishModel(name: name, price: price, isVeg: isVeg, rating: rating),
+        dish: DishModel(
+          name: name,
+          price: price,
+          isVeg: isVeg ?? true,
+          rating: rating,
+          inStock: inStock ?? true,
+          isPopularToday: isPopularToaday ?? false,
+        ),
         imageFile: imageFile,
       );
 
@@ -128,9 +139,31 @@ class _UpdateDishScreenState extends State<UpdateDishScreen> {
                 children: [
                   const Text("Veg"),
                   Switch(
-                    value: isVeg,
+                    value: isVeg ?? true,
                     onChanged: (val) {
                       setState(() => isVeg = val);
+                    },
+                  ),
+                ],
+              ),
+
+              //
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text("InStock"),
+                  Switch(
+                    value: inStock ?? true,
+                    onChanged: (val) {
+                      setState(() => inStock = val);
+                    },
+                  ),
+                  //
+                  const Text("IsPopularToday"),
+                  Switch(
+                    value: isPopularToaday ?? false,
+                    onChanged: (val) {
+                      setState(() => isPopularToaday = val);
                     },
                   ),
                 ],
@@ -141,10 +174,8 @@ class _UpdateDishScreenState extends State<UpdateDishScreen> {
               // 🖼 IMAGE
               if (imageFile != null)
                 Image.file(imageFile!, height: 120)
-              else if (widget.dish.image != null)
-                Image.network(widget.dish.image!, height: 120)
               else
-                const Text("No Image"),
+                Image.network(widget.dish.image, height: 120),
 
               ElevatedButton(
                 onPressed: pickImage,

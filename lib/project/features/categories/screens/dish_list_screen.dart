@@ -1,13 +1,17 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_cafe_user/project/features/categories/controllers/categories_controller.dart';
-import 'package:food_cafe_user/project/features/categories/screens/dish_info_screen.dart';
+import 'package:food_cafe_user/project/features/categories/widgets/dish_card.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
+import 'package:food_cafe_user/project/helpers/widgets/custom_loading.dart';
+import 'package:food_cafe_user/project/model/dish_model.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class DishList extends StatefulWidget {
-  final String cuisineName;
-  const DishList({super.key, required this.cuisineName});
+  final String categoryId, dishName;
+  const DishList({super.key, required this.categoryId, required this.dishName});
 
   @override
   State<DishList> createState() => _DishListState();
@@ -18,9 +22,13 @@ class _DishListState extends State<DishList> {
   final dishController = Get.find<CategoriesController>();
 
   @override
-  initState() {
-    dishController.fetchCategories();
+  void initState() {
     super.initState();
+    fetchDishList();
+  }
+
+  Future<void> fetchDishList() async {
+    await dishController.fetchDishList(widget.categoryId);
   }
 
   //
@@ -29,8 +37,8 @@ class _DishListState extends State<DishList> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${widget.cuisineName} Cuisine",
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+          "${widget.dishName} Cuisine",
+          style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700),
         ),
         leading: IconButton(
           onPressed: () => context.pop(),
@@ -77,61 +85,54 @@ class _DishListState extends State<DishList> {
               ),
             ),
             SizedBox(height: mq.height * .03),
-            dishController.dishList.isNotEmpty
-                ? ListView(
-                    padding: EdgeInsets.only(
-                      left: mq.width * .05,
-                      right: mq.width * .05,
-                    ),
-                    shrinkWrap: true,
-                    children: [
-                      IndexedStack(
-                        index: _i.value,
-                        children: [
-                          // All Food
-                          _wrap(dishController.dishList.toList()),
 
-                          // Veg
-                          _wrap(
-                            dishController.dishList
-                                .where((food) => food.isVeg)
-                                .toList(),
-                          ),
-
-                          // Non-Veg
-                          _wrap(
-                            dishController.dishList
-                                .where((food) => !food.isVeg)
-                                .toList(),
-                          ),
-                        ],
+            Expanded(
+              child: dishController.isDishLoading.value
+                  ? const CustomLoading()
+                  : dishController.dishList.isNotEmpty
+                  ? ListView(
+                      padding: EdgeInsets.only(
+                        left: mq.width * .05,
+                        right: mq.width * .05,
                       ),
-                    ],
-                  )
-                : Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: mq.height * .3),
-                      child: const Text('No Data found'),
-                    ),
-                  ),
+                      children: [
+                        IndexedStack(
+                          index: _i.value,
+                          children: [
+                            // All Food
+                            _wrap(dishController.dishList.toList()),
+
+                            // Veg
+                            _wrap(
+                              dishController.dishList
+                                  .where((food) => food.isVeg)
+                                  .toList(),
+                            ),
+
+                            // Non-Veg
+                            _wrap(
+                              dishController.dishList
+                                  .where((food) => !food.isVeg)
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Center(child: const Text('No Data found')),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _wrap(List list) => Wrap(
+  Widget _wrap(List<DishModel> list) => Wrap(
     alignment: WrapAlignment.start,
     spacing: mq.width * .04,
     runSpacing: mq.width * .03,
 
     //
-    children: [
-      ...list.mapIndexed(
-        (i, e) =>
-            // DishCard(foodModel: e)
-            DishInfoScreen(),
-      ),
-    ],
+    children: [...list.mapIndexed((i, e) => DishCard(dishModel: e))],
   );
 }

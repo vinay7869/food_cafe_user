@@ -15,7 +15,7 @@ class Hurray extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Lottie.asset('assets/lottie/hurray.json',
+    return Lottie.asset('assets/lotties/hurray.json',
         width: double.maxFinite, height: double.maxFinite);
   }
 }

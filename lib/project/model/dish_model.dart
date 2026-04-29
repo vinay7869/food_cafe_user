@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_cafe_user/project/model/extras_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'dish_model.freezed.dart';
@@ -13,7 +14,10 @@ abstract class DishModel with _$DishModel {
     @Default(true) bool isVeg,
     @Default('') String image,
     @Default(0) double rating,
+    @Default(true) bool inStock,
+    @Default(false) bool isPopularToday,
     @TimestampConverter() DateTime? createdAt,
+    ExtrasModel? extras,
   }) = _DishModel;
 
   factory DishModel.fromJson(Map<String, dynamic> json) =>

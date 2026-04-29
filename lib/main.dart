@@ -7,7 +7,10 @@ import 'package:food_cafe_user/project/controllers/nav_controller.dart';
 import 'package:food_cafe_user/project/controllers/user_controller.dart';
 import 'package:food_cafe_user/project/features/auth/auth_controller/google_auth.dart';
 import 'package:food_cafe_user/project/features/bottom_nav/controller/bottom_nav_controller.dart';
+import 'package:food_cafe_user/project/features/categories/controllers/cart_controller.dart';
 import 'package:food_cafe_user/project/features/categories/controllers/categories_controller.dart';
+import 'package:food_cafe_user/project/features/categories/controllers/price_controller.dart';
+import 'package:food_cafe_user/project/features/home_page/controllers/home_controller.dart';
 import 'package:food_cafe_user/project/features/profile/controllers/profile_controller.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:get/get.dart';
@@ -36,6 +39,9 @@ void main() async {
   Get.put(UserController(), permanent: true);
   Get.put(ProfileController());
   Get.put(CategoriesController());
+  Get.put(PriceController());
+  Get.put(CartController());
+  Get.put(HomeController());
 }
 
 class MyApp extends StatelessWidget {

@@ -13,7 +13,12 @@ _DishModel _$DishModelFromJson(Map<String, dynamic> json) => _DishModel(
   isVeg: json['isVeg'] as bool? ?? true,
   image: json['image'] as String? ?? '',
   rating: (json['rating'] as num?)?.toDouble() ?? 0,
+  inStock: json['inStock'] as bool? ?? true,
+  isPopularToday: json['isPopularToday'] as bool? ?? false,
   createdAt: const TimestampConverter().fromJson(json['createdAt']),
+  extras: json['extras'] == null
+      ? null
+      : ExtrasModel.fromJson(json['extras'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$DishModelToJson(_DishModel instance) =>
@@ -24,5 +29,8 @@ Map<String, dynamic> _$DishModelToJson(_DishModel instance) =>
       'isVeg': instance.isVeg,
       'image': instance.image,
       'rating': instance.rating,
+      'inStock': instance.inStock,
+      'isPopularToday': instance.isPopularToday,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'extras': instance.extras,
     };

@@ -5,14 +5,18 @@ import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 
 class CategoryCard extends StatelessWidget {
   final String img, dishName;
-  const CategoryCard({super.key, required this.img, required this.dishName});
+  final void Function() onTap;
+  const CategoryCard({
+    super.key,
+    required this.img,
+    required this.dishName,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Nav.to(DishList(cuisineName: dishName))
-      },
+      onTap: onTap,
       child: SizedBox(
         height: 220.h,
         width: mq.width * .43,
@@ -43,10 +47,10 @@ class CategoryCard extends StatelessWidget {
                 child: Align(
                   child: Text(
                     "$dishName Cuisine",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: txtColor,
                       fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      fontSize: 15.sp,
                     ),
                   ),
                 ),

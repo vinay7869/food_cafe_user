@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:food_cafe_user/project/features/categories/controllers/categories_controller.dart';
 import 'package:food_cafe_user/project/features/categories/widgets/category_card.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -39,9 +39,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     spacing: mq.width * .04,
                     runSpacing: 17,
                     children: _categoriesController.categories.map((e) {
-                      final img = e['image'];
-                      final name = e['name'];
-                      return CategoryCard(img: img, dishName: name);
+                      final img = e.image;
+                      final name = e.name;
+                      final id = e.id;
+                      return CategoryCard(
+                        img: img,
+                        dishName: name,
+                        onTap: () => context.goNamed(
+                          'dishList',
+                          extra: {'id': id, 'name': name},
+                        ),
+                      );
                     }).toList(),
                   ),
                 ],
