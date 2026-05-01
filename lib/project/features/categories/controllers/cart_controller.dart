@@ -8,15 +8,26 @@ class CartController extends GetxController {
   RxDouble finalPrice = 0.0.obs;
 
   void addToCart({required CartItemModel item}) {
-    cartList.add(
-      CartItemModel(
-        dishName: item.dishName,
-        selectedVariantIndex: item.selectedVariantIndex,
-        selectedAddonIndexes: item.selectedAddonIndexes,
-        finalPrice: item.finalPrice,
-        dishImage: item.dishImage,
-      ),
+    int index = cartList.indexWhere(
+      (e) =>
+          e.dishModel.id == item.dishModel.id &&
+          e.selectedVariantIndex == item.selectedVariantIndex &&
+          _listEquals(e.selectedAddonIndexes, item.selectedAddonIndexes),
     );
+
+    if (index != -1) {
+      cartList[index].quantity += 1;
+    } else {
+      cartList.add(
+        CartItemModel(
+          selectedVariantIndex: item.selectedVariantIndex,
+          selectedAddonIndexes: List.from(item.selectedAddonIndexes ?? []),
+          finalPrice: item.finalPrice,
+          dishModel: item.dishModel,
+          quantity: 1,
+        ),
+      );
+    }
 
     log('mY cart -->>>  ${cartList.map((e) => e.toJson()).toList()}');
   }
@@ -24,7 +35,7 @@ class CartController extends GetxController {
   void removeFromCart(CartItemModel item) {
     cartList.removeWhere(
       (e) =>
-          e.dishName == item.dishName &&
+          e.dishModel.name == item.dishModel.name &&
           e.selectedVariantIndex == item.selectedVariantIndex &&
           _listEquals(
             e.selectedAddonIndexes ?? [],
@@ -38,7 +49,7 @@ class CartController extends GetxController {
   bool isItemInCart(CartItemModel item) {
     return cartList.any(
       (e) =>
-          e.dishName == item.dishName &&
+          e.dishModel.id == item.dishModel.id &&
           e.selectedVariantIndex == item.selectedVariantIndex &&
           _listEquals(
             e.selectedAddonIndexes ?? [],
@@ -47,8 +58,13 @@ class CartController extends GetxController {
     );
   }
 
-  bool _listEquals(List<int> a, List<int> b) {
+  bool _listEquals(List<int>? a, List<int>? b) {
+    if (a == null && b == null) return true;
+    if (a == null || b == null) return false;
     if (a.length != b.length) return false;
+
+    a.sort();
+    b.sort();
 
     for (int i = 0; i < a.length; i++) {
       if (a[i] != b[i]) return false;

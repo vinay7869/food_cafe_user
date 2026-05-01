@@ -58,11 +58,10 @@ class BottomNavPricing extends StatelessWidget {
 
           Obx(() {
             final cartStruct = CartItemModel(
-              dishName: widget.dishModel.name,
               selectedVariantIndex: _priceController.selectedVariant.value,
-              selectedAddonIndexes: _priceController.addonsSelected,
+              selectedAddonIndexes: List.from(_priceController.addonsSelected),
               finalPrice: _priceController.finalPrice.value,
-              dishImage: widget.dishModel.image,
+              dishModel: widget.dishModel,
             );
 
             final isInCart = _cartController.isItemInCart(cartStruct);

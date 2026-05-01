@@ -29,7 +29,7 @@ class BottomOrderCard extends StatelessWidget {
           BoxShadow(blurRadius: 7, color: Colors.grey.withValues(alpha: .80)),
         ],
         color: txtColor,
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        borderRadius: BorderRadius.all(Radius.circular(12.r)),
       ),
       margin: EdgeInsets.only(bottom: mq.height * .01),
       child: Row(
@@ -38,7 +38,7 @@ class BottomOrderCard extends StatelessWidget {
           CircleAvatar(
             radius: 27.r,
             backgroundImage: CachedNetworkImageProvider(
-              cartItemModel.dishImage ?? '',
+              cartItemModel.dishModel.image,
             ),
           ),
           Padding(
@@ -49,7 +49,7 @@ class BottomOrderCard extends StatelessWidget {
             child: SizedBox(
               width: mq.width * .26,
               child: Text(
-                cartItemModel.dishName,
+                cartItemModel.dishModel.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700),
@@ -91,9 +91,11 @@ class BottomOrderCard extends StatelessWidget {
                 barrierDismissible: false,
                 builder: (context) {
                   return RemoveCartDialog(
-                    index: i,
-                    cartItemModel: cartItemModel,
-                    cartController: cartController,
+                    dishNmae: cartItemModel.dishModel.name,
+                    onTap: () {
+                      context.pop();
+                      cartController.removeFromCart(cartItemModel);
+                    },
                   );
                 },
               );

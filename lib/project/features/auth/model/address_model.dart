@@ -6,6 +6,7 @@ part 'address_model.g.dart';
 @freezed
 abstract class Address with _$Address {
   const factory Address({
+    // @Default('') String addressLine1,
     @Default('') String street,
     @Default('') String city,
     @Default('') String pincode,

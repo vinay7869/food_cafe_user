@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_cafe_user/project/features/categories/controllers/cart_controller.dart';
-import 'package:food_cafe_user/project/features/categories/model/cart_item_model.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/custom_button.dart';
-import 'package:go_router/go_router.dart';
 
 class RemoveCartDialog extends StatelessWidget {
-  final CartItemModel cartItemModel;
-  final int index;
-  final CartController cartController;
+  final String dishNmae;
+  final VoidCallback onTap;
   const RemoveCartDialog({
     super.key,
-    required this.index,
-    required this.cartItemModel,
-    required this.cartController,
+    required this.dishNmae,
+    required this.onTap,
   });
 
   @override
@@ -53,7 +48,7 @@ class RemoveCartDialog extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: mq.width * .1),
               child: Text(
-                "Are you sure you want to remove ${cartItemModel.dishName} from cart?",
+                "Are you sure you want to remove $dishNmae from cart?",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12.sp, color: blackColor),
               ),
@@ -94,10 +89,7 @@ class RemoveCartDialog extends StatelessWidget {
                 text: 'Yes',
                 fontSize: 13,
                 height: 10,
-                onTap: () {
-                  context.pop();
-                  cartController.removeFromCart(cartItemModel);
-                },
+                onTap: onTap,
               ),
             ),
           ),
