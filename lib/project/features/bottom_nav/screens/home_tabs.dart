@@ -9,6 +9,7 @@ import 'package:food_cafe_user/project/features/bottom_nav/widgets/bottom_order_
 import 'package:food_cafe_user/project/features/categories/controllers/cart_controller.dart';
 import 'package:food_cafe_user/project/features/categories/screens/categories_screen.dart';
 import 'package:food_cafe_user/project/features/home_page/screens/home_page_screen.dart';
+import 'package:food_cafe_user/project/features/profile/controllers/profile_controller.dart';
 import 'package:food_cafe_user/project/features/profile/screens/profile_screen.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/exit_dialog.dart';
@@ -24,12 +25,14 @@ class HomeTabs extends StatefulWidget {
 class _HomeTabsState extends State<HomeTabs> {
   final _bottomNavController = Get.find<BottomNavController>();
   final _cartController = Get.find<CartController>();
+  final _profileController = Get.find<ProfileController>();
 
   final showBottomsheet = false.obs;
 
   @override
   void initState() {
     LocationController.getLocation();
+    _profileController.fetchUser();
     super.initState();
   }
 
@@ -83,7 +86,7 @@ PreferredSizeWidget _appBarContent() {
                   children: [
                     Text(
                       LocationController.stnName.value,
-                      style:  TextStyle(
+                      style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
                       ),

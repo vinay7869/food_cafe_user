@@ -15,7 +15,6 @@ abstract class UserModel with _$UserModel {
     @Default('') String phone,
     @Default('') String profilePic,
     @Default([]) List<Address> address,
-    // @Default('') Address selectedAddress,
     @DateTimeConverter() DateTime? dob,
     @Default(false) bool isAdmin,
   }) = _UserModel;

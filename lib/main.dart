@@ -13,6 +13,7 @@ import 'package:food_cafe_user/project/features/categories/controllers/price_con
 import 'package:food_cafe_user/project/features/checkout/controller/checkout_controller.dart';
 import 'package:food_cafe_user/project/features/home_page/controllers/home_controller.dart';
 import 'package:food_cafe_user/project/features/profile/controllers/profile_controller.dart';
+import 'package:food_cafe_user/project/features/profile/screens/address/address_controller.dart/address_controller.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:get/get.dart';
 import 'project/helpers/custome_code/pref.dart';
@@ -44,6 +45,7 @@ void main() async {
   Get.put(CartController());
   Get.put(HomeController());
   Get.put(CheckoutController());
+  Get.put(AddressController());
 }
 
 class MyApp extends StatelessWidget {

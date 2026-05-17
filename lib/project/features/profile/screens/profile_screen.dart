@@ -22,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _profileController.fetchUser();
+    // _profileController.fetchUser();
   }
 
   @override
@@ -118,8 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ProfileOptions(
             image: '$profilePath/location.png',
             text: 'Address',
-            // onTap: () => Nav.to(const AddressScreen()),
-            onTap: () {},
+            onTap: () => context.goNamed('address'),
           ),
           ProfileOptions(
             image: '$profilePath/notification.png',

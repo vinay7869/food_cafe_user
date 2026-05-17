@@ -11,7 +11,8 @@ class CMTextfield extends StatelessWidget {
   final TextInputType textInputType;
   final VoidCallback onTap;
   final Widget? suffixIcon;
-  final String? Function(String? value)? onSubmitted;
+  final Function(String? value)? onSubmitted;
+  final Function(String? value)? onChanged;
   final String? Function(String? value)? validator;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
@@ -30,6 +31,7 @@ class CMTextfield extends StatelessWidget {
     this.inputFormatters,
     this.maxLength,
     this.readOnly,
+    this.onChanged,
   });
 
   @override
@@ -41,6 +43,7 @@ class CMTextfield extends StatelessWidget {
       onTap: onTap,
       keyboardType: textInputType,
       onTapOutside: (e) => FocusScope.of(context).unfocus(),
+      onChanged: onChanged,
       maxLength: maxLength,
       onFieldSubmitted: onSubmitted,
       validator: validator,

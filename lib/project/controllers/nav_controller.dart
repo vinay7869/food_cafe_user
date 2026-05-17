@@ -3,11 +3,11 @@ import 'package:food_cafe_user/project/features/auth/screens/auth_landing_page.d
 import 'package:food_cafe_user/project/features/auth/screens/login_screen.dart';
 import 'package:food_cafe_user/project/features/auth/screens/sign_up_screen.dart';
 import 'package:food_cafe_user/project/features/bottom_nav/screens/home_tabs.dart';
-import 'package:food_cafe_user/project/features/categories/model/cart_item_model.dart';
 import 'package:food_cafe_user/project/features/categories/screens/dish_info.dart';
 import 'package:food_cafe_user/project/features/categories/screens/dish_list_screen.dart';
 import 'package:food_cafe_user/project/features/checkout/screens/checkout_screen.dart';
 import 'package:food_cafe_user/project/features/onboardings/screens/onboarding_screens.dart';
+import 'package:food_cafe_user/project/features/profile/screens/address/screens/address_screen.dart';
 import 'package:food_cafe_user/project/features/profile/screens/edit_profile_screen.dart';
 import 'package:food_cafe_user/project/features/splash_screen/splash_screen.dart';
 import 'package:food_cafe_user/project/model/dish_model.dart';
@@ -79,6 +79,14 @@ class Nav {
             },
           ),
 
+          GoRoute(
+            path: 'address',
+            name: 'address',
+            builder: (context, state) {
+              return AddressScreen();
+            },
+          ),
+
           // Dish flow starts here
           GoRoute(
             path: 'dishList',
@@ -105,7 +113,6 @@ class Nav {
             path: 'checkout',
             name: 'checkout',
             builder: (context, state) {
-              // final cartItemModel = state.extra as CartItemModel;
               return CheckoutScreen();
             },
           ),

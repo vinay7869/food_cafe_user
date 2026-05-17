@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:food_cafe_user/project/controllers/user_controller.dart';
 import 'package:food_cafe_user/project/features/categories/controllers/cart_controller.dart';
 import 'package:food_cafe_user/project/features/checkout/controller/checkout_controller.dart';
 import 'package:food_cafe_user/project/features/checkout/widgets/checkout_info_widget.dart';
-import 'package:food_cafe_user/project/features/profile/controllers/profile_controller.dart';
+import 'package:food_cafe_user/project/features/profile/screens/address/address_controller.dart/address_controller.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/custom_button.dart';
 import 'package:get/get.dart';
@@ -22,13 +23,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   final _cartController = Get.find<CartController>();
   final _checkoutController = Get.find<CheckoutController>();
-  final ProfileController _profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
     super.initState();
     _checkoutController.calculateTotal();
     _checkoutController.calculateToPay();
+    _checkoutController.fetchDefaultAdd();
   }
 
   @override
@@ -56,7 +57,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             _checkoutCalculationWidget(_cartController, _checkoutController),
 
             // Delivery info Widget
-            _deliveryInfoWidget(_profileController),
+            _deliveryInfoWidget(_checkoutController, context),
 
             // Payment method
             _paymentMethodWidget(isSelected),
@@ -173,14 +174,16 @@ Widget _checkoutCalculationWidget(
   );
 }
 
-
-Widget _deliveryInfoWidget(ProfileController profileController) {
+Widget _deliveryInfoWidget(
+  CheckoutController checkoutController,
+  BuildContext context,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Padding(
         padding: EdgeInsets.only(
-          left: 5,
+          left: 5.w,
           top: mq.height * .03,
           bottom: mq.height * .03,
         ),
@@ -191,7 +194,7 @@ Widget _deliveryInfoWidget(ProfileController profileController) {
       ),
       Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(14)),
+          borderRadius: BorderRadius.all(Radius.circular(14.r)),
           color: Colors.white,
           border: Border.all(color: Colors.grey.withValues(alpha: .10)),
           boxShadow: [
@@ -201,103 +204,119 @@ Widget _deliveryInfoWidget(ProfileController profileController) {
         padding: EdgeInsets.only(top: mq.height * .02, bottom: mq.height * .03),
         child: Padding(
           padding: EdgeInsets.only(left: mq.width * .03, right: mq.width * .03),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Image.asset('$imagePath/location.png', scale: 4),
-                   SizedBox(width: 14.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          child: Obx(
+            () => Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset('$imagePath/location.png', scale: 4),
+                    SizedBox(width: 14.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
 
-                    children: [
-                      const Row(
-                        children: [
-                          Text('Deliver at'),
-                          Text(
-                            " Home",
+                      children: [
+                        Row(
+                          children: [
+                            Text('Deliver at  '),
+                            Text(
+                              checkoutController
+                                      .defaultAdd
+                                      ?.addressType
+                                      .label ??
+                                  "Home",
+                              style: TextStyle(
+                                color: pColor,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: mq.width * .57,
+                          child: Text(
+                            checkoutController.defaultAdd != null
+                                ? "${checkoutController.defaultAdd?.addressLine1}, ${checkoutController.defaultAdd?.street}, ${checkoutController.defaultAdd?.city}, ${checkoutController.defaultAdd?.pincode}."
+                                : "No Address Added",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                             style: TextStyle(
-                              color: pColor,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 12.sp,
+                              color: blackColor,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: mq.width * .57,
-                        child: Text(
-                          '',
-                        // profileController.user.value.address
-                          // NavController
-                          //         .userData
-                          //         .value
-                          //         .address
-                          //         .text
-                          //         .isEmpty
-                          //     ? "Enter Your Address here"
-                          //     : NavController.userData.value.address.text,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 12.sp),
                         ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      // Nav.to(const AddressScreen());
-                    },
-                    child: const Icon(Icons.edit),
-                  ),
-                ],
-              ),
-              SizedBox(height: mq.height * .03),
-              Row(
-                children: [
-                  Image.asset('$imagePath/duration.png', scale: 4),
-                  const SizedBox(width: 14),
-                  const Text('Delivery in'),
-                  const Text(
-                    " 27 mins",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: pColor,
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: mq.height * .03),
-              Row(
-                children: [
-                  Image.asset('$imagePath/call.png', scale: 4),
-                  const SizedBox(width: 14),
-                  Text(
-                    // '${NavController.userData.value.displayName.text},',
-                    '',
-                  ),
-                  // NavController.userData.value.phoneNo.text.isEmpty
-                  //     ?
-                  GestureDetector(
-                    onTap: () {
-                      // Nav.to(const EditProfileScreen());
-                    },
-                    child: const Text(
-                      "  Your phone number",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    const Spacer(),
+
+                    IconButton(
+                      onPressed: () {
+                        context.pushNamed('address');
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                  ],
+                ),
+                SizedBox(height: mq.height * .03),
+                Row(
+                  children: [
+                    Image.asset('$imagePath/duration.png', scale: 4),
+                    const SizedBox(width: 14),
+                    const Text('Delivery in'),
+                    const Text(
+                      " 27 mins",
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: pColor,
                       ),
                     ),
-                  ),
-                  // : Text(
-                  //     "  ${NavController.userData.value.phoneNo.text}",
-
-                  //   ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+                SizedBox(height: mq.height * .03),
+                Row(
+                  children: [
+                    Image.asset('$imagePath/call.png', scale: 4),
+                    SizedBox(width: 14.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          checkoutController.profileController.user.value.name,
+                        ),
+                        checkoutController
+                                .profileController
+                                .user
+                                .value
+                                .phone
+                                .isEmpty
+                            ? GestureDetector(
+                                onTap: () {
+                                  context.goNamed('editProfile');
+                                },
+                                child: const Text(
+                                  "Tap to add your phone number",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: pColor,
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                checkoutController
+                                    .profileController
+                                    .user
+                                    .value
+                                    .phone,
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                              ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -307,6 +326,7 @@ Widget _deliveryInfoWidget(ProfileController profileController) {
 
 Widget _paymentMethodWidget(RxInt isSelected) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Padding(
         padding: EdgeInsets.only(
