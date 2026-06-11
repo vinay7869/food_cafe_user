@@ -18,10 +18,14 @@ class CartController extends GetxController {
     if (index != -1) {
       cartList[index].quantity += 1;
     } else {
+      final validIndexes = (item.selectedAddonIndexes ?? [])
+          .where((i) => i < (item.dishModel.extras?.addons.length ?? 0))
+          .toList();
+
       cartList.add(
         CartItemModel(
           selectedVariantIndex: item.selectedVariantIndex,
-          selectedAddonIndexes: List.from(item.selectedAddonIndexes ?? []),
+          selectedAddonIndexes: validIndexes,
           finalPrice: item.finalPrice,
           dishModel: item.dishModel,
           quantity: 1,

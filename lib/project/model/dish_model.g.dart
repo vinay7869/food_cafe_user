@@ -32,5 +32,5 @@ Map<String, dynamic> _$DishModelToJson(_DishModel instance) =>
       'inStock': instance.inStock,
       'isPopularToday': instance.isPopularToday,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
-      'extras': instance.extras,
+      'extras': instance.extras?.toJson(),
     };

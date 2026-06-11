@@ -1,12 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:food_cafe_user/project/controllers/payment_controller.dart';
 import 'package:food_cafe_user/project/features/categories/controllers/cart_controller.dart';
 import 'package:food_cafe_user/project/features/checkout/controller/checkout_controller.dart';
 import 'package:food_cafe_user/project/features/checkout/widgets/checkout_info_widget.dart';
+import 'package:food_cafe_user/project/features/checkout/widgets/order_success_dialog.dart';
 import 'package:food_cafe_user/project/features/profile/screens/address/address_controller.dart/address_controller.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
+import 'package:food_cafe_user/project/helpers/custome_code/my_dialogs.dart';
 import 'package:food_cafe_user/project/helpers/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +25,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   final _cartController = Get.find<CartController>();
   final _checkoutController = Get.find<CheckoutController>();
+  final _paymentController = Get.find<PaymentController>();
 
   @override
   void initState() {
@@ -64,7 +67,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _placeOrderCta(),
+      bottomNavigationBar: _placeOrderCta(
+        _checkoutController,
+        isSelected,
+        _paymentController,
+        context,
+      ),
     );
   }
 }
@@ -341,7 +349,7 @@ Widget _paymentMethodWidget(RxInt isSelected) {
       ),
       Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(14)),
+          borderRadius: BorderRadius.all(Radius.circular(14.r)),
           color: Colors.white,
           border: Border.all(color: Colors.grey.withValues(alpha: .10)),
           boxShadow: [
@@ -360,12 +368,12 @@ Widget _paymentMethodWidget(RxInt isSelected) {
                     const SizedBox(width: 14),
                     const Text("Net Banking / UPI"),
                     const Spacer(),
-                    Radio(
-                      value: 0,
+                    RadioGroup<int>(
                       groupValue: isSelected.value,
                       onChanged: (v) {
                         isSelected.value = v!;
                       },
+                      child: Radio(value: 0),
                     ),
                   ],
                 ),
@@ -375,12 +383,12 @@ Widget _paymentMethodWidget(RxInt isSelected) {
                     const SizedBox(width: 14),
                     const Text("Cash on Delivery"),
                     const Spacer(),
-                    Radio(
-                      value: 1,
+                    RadioGroup<int>(
                       groupValue: isSelected.value,
                       onChanged: (v) {
                         isSelected.value = v!;
                       },
+                      child: Radio(value: 1),
                     ),
                   ],
                 ),
@@ -393,7 +401,12 @@ Widget _paymentMethodWidget(RxInt isSelected) {
   );
 }
 
-Widget _placeOrderCta() {
+Widget _placeOrderCta(
+  CheckoutController checkoutController,
+  RxInt isSelected,
+  PaymentController paymentController,
+  BuildContext context,
+) {
   return SafeArea(
     child: SizedBox(
       height: 70.h,
@@ -401,23 +414,39 @@ Widget _placeOrderCta() {
       child: CustomButton(
         text: 'Place Order',
         onTap: () {
-          // if (NavController.userData.value.address.text.isEmpty) {
-          //   showSnackbar(context, 'Please enter delivery Address');
-          //   return;
-          // } else if (NavController.userData.value.phoneNo.text.isEmpty) {
-          //   showSnackbar(context, 'Please Provide your Phone number');
-          //   return;
-          // } else if (isSelected.value == 0) {
-          //   final payC = Get.find<PaymentController>();
-          //   payC.startPayment(
-          //     amount: toPay.value * 100,
-          //     phoneNo: NavController.userData.value.phoneNo.text,
-          //   );
-          //   UpdateData.clearCart();
-          // } else {
-          //   Get.dialog(const OrderConfirmDialog());
-          //   UpdateData.clearCart();
-          // }
+          if (checkoutController.defaultAdd == null) {
+            MyDialogs.showToast(
+              'Add address to place order',
+              Toast.LENGTH_LONG,
+            );
+          } else if (checkoutController
+              .profileController
+              .user
+              .value
+              .phone
+              .isEmpty) {
+            MyDialogs.showToast(
+              'Add Phone no to place order',
+              Toast.LENGTH_LONG,
+            );
+          } else if (isSelected.value == 0) {
+            paymentController.startPayment(
+              amount: (checkoutController.toPay.value * 100).toInt(),
+              phoneNo: checkoutController.profileController.user.value.phone,
+              context: context,
+            );
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return OrderSuccessDialog(
+                  orderId: '',
+                  paymentId: 'COD',
+                  paymentMethod: 'COD',
+                );
+              },
+            );
+          }
         },
         color: pColor,
         width: mq.width * .8,

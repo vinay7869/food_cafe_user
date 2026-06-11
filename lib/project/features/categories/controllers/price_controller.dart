@@ -9,12 +9,14 @@ class PriceController extends GetxController {
   void calculatePrice({required List variants, required List addons}) {
     double total = 0;
 
-    if (variants.isNotEmpty) {
+    if (variants.isNotEmpty && selectedVariant.value < variants.length) {
       total += variants[selectedVariant.value].price;
     }
 
     for (var i in addonsSelected) {
-      total += addons[i].price;
+      if (i < addons.length) {
+        total += addons[i].price;
+      }
     }
 
     finalPrice.value = total;

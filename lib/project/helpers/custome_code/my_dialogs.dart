@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'global.dart';
 
 class MyDialogs {
+  static void showToast(String msg, Toast toastLength) {
+    Fluttertoast.showToast(msg: msg, toastLength: toastLength);
+  }
+
   static void error({required String msg}) {
     messengerKey.currentState?.showSnackBar(
-      SnackBar(content: Text(msg), backgroundColor: Colors.red,),
+      SnackBar(content: Text(msg), backgroundColor: Colors.red),
     );
   }
 

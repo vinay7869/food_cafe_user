@@ -28,7 +28,7 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'email': instance.email,
       'phone': instance.phone,
       'profilePic': instance.profilePic,
-      'address': instance.address,
+      'address': instance.address.map((e) => e.toJson()).toList(),
       'dob': const DateTimeConverter().toJson(instance.dob),
       'isAdmin': instance.isAdmin,
     };

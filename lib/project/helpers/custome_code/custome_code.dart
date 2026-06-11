@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomeCode {
@@ -17,5 +19,21 @@ class CustomeCode {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(errorMsg)));
+  }
+}
+
+class TimestampConverter implements JsonConverter<DateTime?, Object?> {
+  const TimestampConverter();
+
+  @override
+  DateTime? fromJson(Object? json) {
+    if (json is Timestamp) return json.toDate();
+    return null;
+  }
+
+  @override
+  Object? toJson(DateTime? object) {
+    if (object == null) return null;
+    return Timestamp.fromDate(object);
   }
 }

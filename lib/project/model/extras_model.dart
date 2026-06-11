@@ -5,7 +5,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'extras_model.freezed.dart';
 part 'extras_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
+
 abstract class ExtrasModel with _$ExtrasModel {
   const factory ExtrasModel({
     @Default([]) List<AddonsModel> addons,

@@ -1,9 +1,28 @@
+import 'package:flutter/widgets.dart';
 import 'package:food_cafe_user/project/features/home_page/widgets/feel_container.dart';
+import 'package:food_cafe_user/project/features/home_page/widgets/home_menu_items.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:get/state_manager.dart';
 
 class HomeController extends GetxController {
   final feelList = [].obs;
+  final index = 0.obs;
+
+  final carouselList = <Widget>[
+    Image.asset('$imagePath/1.png'),
+    Image.asset('$imagePath/1.png'),
+    Image.asset('$imagePath/1.png'),
+    Image.asset('$imagePath/1.png'),
+    Image.asset('$imagePath/1.png'),
+  ];
+
+  List<HomeMenuItems> homeMenuItems = [
+    const HomeMenuItems(img: '$imagePath/chinese.png', cName: 'Chinese'),
+    const HomeMenuItems(img: '$imagePath/indian.png', cName: 'Indian'),
+    const HomeMenuItems(img: '$imagePath/italian.png', cName: 'Italian'),
+    const HomeMenuItems(img: '$imagePath/french.png', cName: 'French'),
+    const HomeMenuItems(img: '$imagePath/japanese.png', cName: 'Japanese'),
+  ];
 
   Future<void> getFeelData() async {
     Future.delayed(const Duration(seconds: 3), () {

@@ -11,6 +11,7 @@ import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/custom_loading.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -20,18 +21,8 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
-  final _i = 0.obs;
-
   final _homeController = Get.find<HomeController>();
   final _dishController = Get.find<CategoriesController>();
-
-  List<HomeMenuItems> homeMenuItems = [
-    const HomeMenuItems(img: '$imagePath/chinese.png', cName: 'Chinese'),
-    const HomeMenuItems(img: '$imagePath/indian.png', cName: 'Indian'),
-    const HomeMenuItems(img: '$imagePath/italian.png', cName: 'Italian'),
-    const HomeMenuItems(img: '$imagePath/french.png', cName: 'French'),
-    const HomeMenuItems(img: '$imagePath/japanese.png', cName: 'Japanese'),
-  ];
 
   @override
   void initState() {
@@ -52,7 +43,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
           child: Column(
             children: [
               // slider widget
-              _sliderWidget(_i),
+              _sliderWidget(_homeController),
 
               //  feel containers
               _feelContainers(_homeController),
@@ -68,7 +59,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
 
               // menu items
-              _menuItems(homeMenuItems),
+              _menuItems(_homeController.homeMenuItems),
 
               // today's offer
               _todaysOffer(),
@@ -83,21 +74,33 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 }
 
-Widget _sliderWidget(RxInt i) {
-  return Padding(
-    padding: EdgeInsets.only(right: mq.width * .04),
-    child: CarouselSlider(
-      options: CarouselOptions(
-        scrollDirection: Axis.horizontal,
-        viewportFraction: 1,
-        onPageChanged: (index, reason) => i.value = index,
-        autoPlayCurve: Curves.fastOutSlowIn,
-        autoPlay: true,
-      ),
-      items: [
-        Image.asset('$imagePath/1.png'),
-        Image.asset('$imagePath/1.png'),
-        Image.asset('$imagePath/1.png'),
+Widget _sliderWidget(HomeController homeController) {
+  return Obx(
+    () => Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(right: mq.width * .04),
+          child: CarouselSlider(
+            options: CarouselOptions(
+              scrollDirection: Axis.horizontal,
+              viewportFraction: 1,
+              onPageChanged: (index, reason) =>
+                  homeController.index.value = index,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              autoPlay: true,
+            ),
+            items: [...homeController.carouselList],
+          ),
+        ),
+
+        Padding(
+          padding: EdgeInsets.only(bottom: 15.h),
+          child: AnimatedSmoothIndicator(
+            activeIndex: homeController.index.value,
+            count: homeController.carouselList.length,
+            effect: ExpandingDotsEffect(dotHeight: 7.h),
+          ),
+        ),
       ],
     ),
   );

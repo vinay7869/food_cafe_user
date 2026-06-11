@@ -4,8 +4,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'address_model.freezed.dart';
 part 'address_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
+
 abstract class Address with _$Address {
+ 
+
   const factory Address({
     @Default('') String id,
     @Default('') String addressLine1,

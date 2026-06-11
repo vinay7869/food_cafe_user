@@ -14,6 +14,7 @@ import 'package:food_cafe_user/project/features/profile/screens/profile_screen.d
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:food_cafe_user/project/helpers/widgets/exit_dialog.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 
 class HomeTabs extends StatefulWidget {
   const HomeTabs({super.key});
@@ -91,9 +92,23 @@ PreferredSizeWidget _appBarContent() {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      "${LocationController.streetName.value},${LocationController.pinCode.value}",
-                      style: TextStyle(fontSize: 12.sp),
+                    SizedBox(
+                      width: 190.w,
+                      height: 15.h,
+                      child: Marquee(
+                        text:
+                            "${LocationController.streetName.value},${LocationController.pinCode.value}",
+                        style: TextStyle(fontSize: 12.sp),
+                        blankSpace: 40.0,
+                        velocity: 100.0,
+                        pauseAfterRound: Duration(seconds: 1),
+                        scrollAxis: Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        accelerationDuration: Duration(seconds: 1),
+                        accelerationCurve: Curves.linear,
+                        decelerationDuration: Duration(milliseconds: 500),
+                        decelerationCurve: Curves.easeOut,
+                      ),
                     ),
                   ],
                 )

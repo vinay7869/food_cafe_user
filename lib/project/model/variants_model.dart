@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'variants_model.freezed.dart';
 part 'variants_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
 abstract class VariantsModel with _$VariantsModel {
   const factory VariantsModel({
     @Default('') String name,

@@ -1,11 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food_cafe_user/project/helpers/custome_code/custome_code.dart';
 import 'package:food_cafe_user/project/model/extras_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'dish_model.freezed.dart';
 part 'dish_model.g.dart';
 
-@freezed
+@Freezed(fromJson: true, toJson: true)
+
 abstract class DishModel with _$DishModel {
   const factory DishModel({
     String? id,
@@ -22,20 +23,4 @@ abstract class DishModel with _$DishModel {
 
   factory DishModel.fromJson(Map<String, dynamic> json) =>
       _$DishModelFromJson(json);
-}
-
-class TimestampConverter implements JsonConverter<DateTime?, Object?> {
-  const TimestampConverter();
-
-  @override
-  DateTime? fromJson(Object? json) {
-    if (json is Timestamp) return json.toDate();
-    return null;
-  }
-
-  @override
-  Object? toJson(DateTime? object) {
-    if (object == null) return null;
-    return Timestamp.fromDate(object);
-  }
 }

@@ -50,6 +50,7 @@ class AddressController extends GetxController {
       });
 
       await fetchAddresses();
+      
 
       Fluttertoast.showToast(
         msg: "Address addded successfully",

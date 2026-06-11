@@ -50,6 +50,12 @@ class _DishInfoState extends State<DishInfoScreen> {
   }
 
   @override
+  void dispose() {
+    _priceController.addonsSelected.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // app bar
@@ -57,7 +63,10 @@ class _DishInfoState extends State<DishInfoScreen> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           color: txtColor,
-          onPressed: Get.back,
+          onPressed: () {
+            context.pop();
+            _priceController.addonsSelected.clear();
+          },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
 

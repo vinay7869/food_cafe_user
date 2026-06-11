@@ -20,4 +20,7 @@ _ExtrasModel _$ExtrasModelFromJson(Map<String, dynamic> json) => _ExtrasModel(
 );
 
 Map<String, dynamic> _$ExtrasModelToJson(_ExtrasModel instance) =>
-    <String, dynamic>{'addons': instance.addons, 'variants': instance.variants};
+    <String, dynamic>{
+      'addons': instance.addons.map((e) => e.toJson()).toList(),
+      'variants': instance.variants.map((e) => e.toJson()).toList(),
+    };

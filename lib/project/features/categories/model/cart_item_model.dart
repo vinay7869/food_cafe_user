@@ -27,7 +27,7 @@ class CartItemModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'dishModel': dishModel,
+      'dishModel': dishModel.toJson(),
       'selectedVariantIndex': selectedVariantIndex,
       'selectedAddonIndexes': selectedAddonIndexes,
       'finalPrice': finalPrice,
