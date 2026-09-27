@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,8 +25,8 @@ class OrderSuccessDialog extends StatefulWidget {
 
 class _OrderSuccessDialogState extends State<OrderSuccessDialog> {
   final _checkoutController = Get.find<CheckoutController>();
-
   final _orderHistoryController = Get.find<OrderHistoryController>();
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -72,11 +75,15 @@ class _OrderSuccessDialogState extends State<OrderSuccessDialog> {
               ],
             ),
           ),
+
+     
+
           Positioned(
             right: mq.width * .17,
             top: 0,
             bottom: mq.height * .19,
-            child: GestureDetector(
+            child:     
+             GestureDetector(
               onTap: () async {
                 final orderModel = OrderHistoryModel(
                   paymentId: widget.paymentId,
@@ -84,12 +91,19 @@ class _OrderSuccessDialogState extends State<OrderSuccessDialog> {
                   paymentMethod: widget.paymentMethod,
                   createdAt: DateTime.now(),
                   totalAmount: _checkoutController.toPay.value,
-                  cartItems: _checkoutController.cartController.cartList,
+                  cartItems: _checkoutController.cartController.cartList
+                      .map((e) => e)
+                      .toList(),
+                  // cartItems: _checkoutController.cartController.cartList,
                   address: _checkoutController.defaultAdd,
                 );
 
-                _orderHistoryController.addOrderHistory(orderModel);
-                context.pop();
+                await _orderHistoryController.saveOrderInDb(
+                  orderModel: orderModel,
+                );
+                _checkoutController.cartController.cartList.clear();
+
+                if (context.mounted) context.pop();
               },
               child: Icon(CupertinoIcons.xmark_circle, size: 24.h),
             ),

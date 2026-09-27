@@ -7,6 +7,7 @@ import 'package:food_cafe_user/project/features/categories/screens/dish_info.dar
 import 'package:food_cafe_user/project/features/categories/screens/dish_list_screen.dart';
 import 'package:food_cafe_user/project/features/checkout/screens/checkout_screen.dart';
 import 'package:food_cafe_user/project/features/onboardings/screens/onboarding_screens.dart';
+import 'package:food_cafe_user/project/features/order_history/screens/my_orders_page.dart';
 import 'package:food_cafe_user/project/features/profile/screens/address/screens/address_screen.dart';
 import 'package:food_cafe_user/project/features/profile/screens/edit_profile_screen.dart';
 import 'package:food_cafe_user/project/features/splash_screen/splash_screen.dart';
@@ -84,6 +85,14 @@ class Nav {
             name: 'address',
             builder: (context, state) {
               return AddressScreen();
+            },
+          ),
+
+          GoRoute(
+            path: 'myOrders',
+            name: 'myOrders',
+            builder: (context, state) {
+              return MyOrdersPage();
             },
           ),
 

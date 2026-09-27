@@ -48,6 +48,7 @@ class CustomButton extends StatelessWidget {
                     )
                   : Text(
                       text,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         letterSpacing: .9,
                         fontWeight: FontWeight.w700,
@@ -56,6 +57,7 @@ class CustomButton extends StatelessWidget {
                       ),
                     )
             : Text(
+                textAlign: TextAlign.center,
                 text,
                 style: TextStyle(
                   letterSpacing: .9,

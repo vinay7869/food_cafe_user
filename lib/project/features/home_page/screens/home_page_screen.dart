@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_cafe_user/project/features/categories/controllers/categories_controller.dart';
@@ -42,6 +45,19 @@ class _HomePageScreenState extends State<HomePageScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              ElevatedButton(
+                onPressed: () async {
+                  log("TEST START");
+
+                  await FirebaseFirestore.instance
+                      .collection("firestore_debug")
+                      .doc()
+                      .set({"time": FieldValue.serverTimestamp()});
+
+                  log("TEST END");
+                },
+                child: const Text("Test Firestore"),
+              ),
               // slider widget
               _sliderWidget(_homeController),
 

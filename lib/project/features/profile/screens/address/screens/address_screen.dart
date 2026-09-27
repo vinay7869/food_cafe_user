@@ -33,10 +33,7 @@ class _AddressScreenState extends State<AddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Saved Addresses',
-          style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700),
-        ),
+        title: Text('Saved Addresses'),
         leading: IconButton(
           onPressed: () => context.pop(),
           icon: const Icon(Icons.arrow_back_ios_new),

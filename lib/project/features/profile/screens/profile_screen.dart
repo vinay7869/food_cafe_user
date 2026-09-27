@@ -112,8 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ProfileOptions(
             image: '$profilePath/wallet.png',
             text: 'My Orders',
-            // onTap: () => Nav.to(const MyOrders()),
-            onTap: () {},
+            onTap: () => context.goNamed('myOrders'),
           ),
           ProfileOptions(
             image: '$profilePath/location.png',

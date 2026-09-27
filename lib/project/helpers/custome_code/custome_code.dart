@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_cafe_user/project/helpers/custome_code/global.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomeCode {
@@ -19,6 +20,11 @@ class CustomeCode {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(errorMsg)));
+  }
+
+  static String dateFormater({required DateTime? date}) {
+    if (date == null) return '';
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 }
 

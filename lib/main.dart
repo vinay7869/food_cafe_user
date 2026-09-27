@@ -69,9 +69,14 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             scaffoldBackgroundColor: scaffoldBgClr,
             fontFamily: 'Poppins',
-            appBarTheme: const AppBarTheme(
+            appBarTheme: AppBarTheme(
               backgroundColor: Colors.transparent,
               centerTitle: false,
+              titleTextStyle: TextStyle(
+                fontSize: 17.sp,
+                color: blackColor,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           scaffoldMessengerKey: messengerKey,
